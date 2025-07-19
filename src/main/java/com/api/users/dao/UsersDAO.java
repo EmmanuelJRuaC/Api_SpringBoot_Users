@@ -6,11 +6,14 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import org.springframework.stereotype.Service;
+
 import com.api.users.factory.ConnectionFactory;
 import com.api.users.models.UsersModel;
 
 import jakarta.transaction.Transactional;
 
+@Service
 public class UsersDAO {
 
     @Transactional
