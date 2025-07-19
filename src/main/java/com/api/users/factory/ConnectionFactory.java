@@ -6,7 +6,7 @@ import java.sql.SQLException;
 
 public class ConnectionFactory {
     public Connection getConnection() {
-        String url = "jdbc:mysql://mysql-emmanuelrua11.alwaysdata.net/emmanuelrua_users?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true";
+        String url = "jdbc:mysql://mysql-emmanuelrua11.alwaysdata.net/emmanuelrua11_users?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true";
         String user = "422146";
         String password = "Ema20031011";
 
