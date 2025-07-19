@@ -43,4 +43,34 @@ public class UsersDAO {
             return users;
         }
     }
+
+    @Transactional(readOnly = true)
+    public ArrayList<UsersModel> getUserById(long id) throws SQLException {
+        ArrayList<UsersModel> users = new ArrayList<>();
+        try (Connection connection = new ConnectionFactory().getConnection()) {
+            final String QUERY = "SELECT * FROM users WHERE id = ?";
+            PreparedStatement statement = connection.prepareStatement(QUERY);
+            try (statement) {
+                statement.setLong(1, id);
+                statement.execute();
+                final ResultSet resultSet = statement.getResultSet();
+                try (resultSet) {
+                    while (resultSet.next()) {
+                        UsersModel user = new UsersModel();
+
+                        user.setId(resultSet.getLong("id"));
+                        user.setFirst_name(resultSet.getString("first_name"));
+                        user.setLast_name(resultSet.getString("last_name"));
+                        user.setGender(resultSet.getString("gender"));
+                        user.setAddress(resultSet.getString("address"));
+                        user.setCity(resultSet.getString("city"));
+                        user.setPhone(resultSet.getLong("phone"));
+
+                        users.add(user);
+                    }
+                }
+            }
+            return users;
+        }
+    }
 }
