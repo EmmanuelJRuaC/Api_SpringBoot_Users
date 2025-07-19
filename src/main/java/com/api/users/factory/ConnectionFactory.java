@@ -11,7 +11,6 @@ public class ConnectionFactory {
         String password = "Ema20031011";
 
         try {
-            System.out.println("Conectado");
             return DriverManager.getConnection(url, user, password);
         } catch (SQLException e) {
             throw new RuntimeException(e);
