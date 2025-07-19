@@ -7,16 +7,15 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.api.users.factory.ConnectionFactory;
 import com.api.users.models.UsersModel;
 
-import jakarta.transaction.Transactional;
-
 @Service
 public class UsersDAO {
 
-    @Transactional
+    @Transactional(readOnly = true)
     public ArrayList<UsersModel> getUsers() throws SQLException {
         ArrayList<UsersModel> users = new ArrayList<>();
         try (Connection connection = new ConnectionFactory().getConnection()) {
