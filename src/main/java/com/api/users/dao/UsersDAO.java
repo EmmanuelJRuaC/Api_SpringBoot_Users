@@ -11,25 +11,33 @@ import org.springframework.stereotype.Service;
 import com.api.users.factory.ConnectionFactory;
 import com.api.users.models.UsersModel;
 
+import jakarta.transaction.Transactional;
+
 @Service
 public class UsersDAO {
 
-    //@Transactional(readOnly = true)
+    @Transactional
     public ArrayList<UsersModel> getUsers() throws SQLException {
         ArrayList<UsersModel> users = new ArrayList<>();
         try (Connection connection = new ConnectionFactory().getConnection()) {
             final String QUERY = "SELECT * FROM USERS";
             PreparedStatement statement = connection.prepareStatement(QUERY);
-            try (statement) {          
+            try (statement) {
                 statement.execute();
                 final ResultSet resultSet = statement.getResultSet();
                 try (resultSet) {
                     while (resultSet.next()) {
                         UsersModel user = new UsersModel();
+                        user.setFirst_name(resultSet.getString("first_name"));
+                        user.setLast_name(resultSet.getString("last_name"));
+                        user.setGender(resultSet.getString("gender"));
+                        user.setAddress(resultSet.getString("address"));
+                        user.setCity(resultSet.getString("city"));
+                        user.setPhone(resultSet.getInt("phone"));
+                    }
                 }
             }
-        }
-        return users;
+            return users;
         }
     }
 }
