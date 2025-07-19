@@ -21,11 +21,11 @@ public class UsersModel {
     private String gender;
     private String address;
     private String city;
-    private int phone;
+    private long phone;
 
     public UsersModel() {}
 
-    public UsersModel(String first_name, String last_name, String gender, String address, String city, int phone) {
+    public UsersModel(String first_name, String last_name, String gender, String address, String city, long phone) {
         this.first_name = first_name;
         this.last_name = last_name;
         this.gender = gender;
