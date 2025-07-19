@@ -10,6 +10,7 @@ import java.util.ArrayList;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @RestController
@@ -25,4 +26,8 @@ public class UsersController {
         return usersDAO.getUsers();
     }
     
+    @GetMapping("/getuser/{id}")
+    public ArrayList<UsersModel> getUserById(@PathVariable long id) throws SQLException {
+        return usersDAO.getUserById(id);
+    }
 }
