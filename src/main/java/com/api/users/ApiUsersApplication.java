@@ -11,7 +11,6 @@ import jakarta.servlet.http.HttpServletResponse;
 
 @SpringBootApplication
 @RestController
-@RequestMapping("/users")
 public class ApiUsersApplication {
 
 	public static void main(String[] args) {
