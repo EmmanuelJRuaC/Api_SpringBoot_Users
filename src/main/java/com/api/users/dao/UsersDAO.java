@@ -32,7 +32,7 @@ public class UsersDAO {
                         user.setGender(resultSet.getString("gender"));
                         user.setAddress(resultSet.getString("address"));
                         user.setCity(resultSet.getString("city"));
-                        user.setPhone(resultSet.getInt("phone"));
+                        user.setPhone(resultSet.getLong("phone"));
 
                         users.add(user);
                     }
