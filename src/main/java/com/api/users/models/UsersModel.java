@@ -19,4 +19,15 @@ public class UsersModel {
     private String address;
     private String city;
     private int phone;
+
+    public UsersModel() {}
+
+    public UsersModel(String first_name, String last_name, String gender, String address, String city, int phone) {
+        this.first_name = first_name;
+        this.last_name = last_name;
+        this.gender = gender;
+        this.address = address;
+        this.city = city;
+        this.phone = phone;
+    } 
 }
