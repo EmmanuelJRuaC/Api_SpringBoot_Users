@@ -29,6 +29,7 @@ public class UsersDAO {
                     while (resultSet.next()) {
                         UsersModel user = new UsersModel();
 
+                        user.setId(resultSet.getLong("id"));
                         user.setFirst_name(resultSet.getString("first_name"));
                         user.setLast_name(resultSet.getString("last_name"));
                         user.setGender(resultSet.getString("gender"));
