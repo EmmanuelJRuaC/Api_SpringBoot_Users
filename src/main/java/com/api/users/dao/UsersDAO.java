@@ -5,7 +5,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Map;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -71,6 +73,33 @@ public class UsersDAO {
                 }
             }
             return users;
+        }
+    }
+
+    @Transactional
+    public ResponseEntity<Map<String, String>> saveUser(String first_name, String last_name, String gender, String address, String city, long phone) throws SQLException {
+        try (Connection connection = new ConnectionFactory().getConnection()) {
+            final String QUERY = "INSERT INTO users VALUES (?, ?, ?, ?, ?, ?)";
+            PreparedStatement statement = connection.prepareStatement(QUERY);
+            try (statement) {
+                statement.setString(1, first_name);
+                statement.setString(2, last_name);
+                statement.setString(3, gender);
+                statement.setString(4, address);
+                statement.setString(5, city);
+                statement.setLong(6, phone);
+                boolean status = statement.execute();
+
+                if (status) {
+                    return ResponseEntity.
+                    status(200).
+                    body(Map.of("Mensaje:", "¡Usuario creado con exito!"));
+                } else {
+                    return ResponseEntity.
+                    status(404).
+                    body(Map.of("Error:", "¡Usuario no creado!"));
+                }
+            }
         }
     }
 }
