@@ -46,16 +46,25 @@ public class UsersController {
         }
     }
 
-    //  Metodo para guardar nuevos usuarios
+    // Metodo para guardar nuevos usuarios
     @PostMapping("/saveuser")
-    public ResponseEntity<Map<String, String>> saveUser(@RequestBody UsersModel usersModel) throws SQLException {
-        return usersDAO.saveUser(
-            usersModel.getFirst_name(), 
-            usersModel.getLast_name(), 
-            usersModel.getGender(),
-            usersModel.getAddress(), 
-            usersModel.getCity(),
-            usersModel.getPhone()
-        );
+    public ResponseEntity<Map<String, Object>> saveUser(@RequestBody UsersModel usersModel) throws SQLException {
+        int row = usersDAO.saveUser(
+                usersModel.getFirst_name(),
+                usersModel.getLast_name(),
+                usersModel.getGender(),
+                usersModel.getAddress(),
+                usersModel.getCity(),
+                usersModel.getPhone()
+            );
+        if (row > 0) {
+            return ResponseEntity.
+            status(200).
+            body(Map.of("Mensaje:", "¡Usuario creado con exito!"));
+        } else {
+            return ResponseEntity.
+            status(404).
+            body(Map.of("Error:", "¡Usuario no creado!"));
+        }
     }
 }
