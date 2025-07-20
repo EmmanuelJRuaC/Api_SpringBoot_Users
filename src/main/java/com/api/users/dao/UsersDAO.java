@@ -77,7 +77,7 @@ public class UsersDAO {
     @Transactional
     public boolean saveUser(String first_name, String last_name, String gender, String address, String city, long phone) throws SQLException {
         try (Connection connection = new ConnectionFactory().getConnection()) {
-            final String QUERY = "INSERT INTO users VALUES (?, ?, ?, ?, ?, ?)";
+            final String QUERY = "INSERT INTO users (first_name, last_name, gender, address, city, phone) VALUES (?, ?, ?, ?, ?, ?)";
             PreparedStatement statement = connection.prepareStatement(QUERY);
             try (statement) {
                 statement.setString(1, first_name);
