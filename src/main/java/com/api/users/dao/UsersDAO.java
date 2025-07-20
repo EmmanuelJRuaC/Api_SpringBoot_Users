@@ -75,7 +75,7 @@ public class UsersDAO {
     }
 
     @Transactional
-    public boolean saveUser(String first_name, String last_name, String gender, String address, String city, long phone) throws SQLException {
+    public int saveUser(String first_name, String last_name, String gender, String address, String city, long phone) throws SQLException {
         try (Connection connection = new ConnectionFactory().getConnection()) {
             final String QUERY = "INSERT INTO users (first_name, last_name, gender, address, city, phone) VALUES (?, ?, ?, ?, ?, ?)";
             PreparedStatement statement = connection.prepareStatement(QUERY);
@@ -86,9 +86,9 @@ public class UsersDAO {
                 statement.setString(4, address);
                 statement.setString(5, city);
                 statement.setLong(6, phone);
-                boolean status = statement.execute();
+                int row = statement.executeUpdate();
                 
-                return status;
+                return row;
             }
         }
     }
