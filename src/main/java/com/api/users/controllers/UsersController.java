@@ -13,6 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @RestController
@@ -38,11 +40,22 @@ public class UsersController {
             // Retornar un JSON con un mensaje personalizado
             return ResponseEntity
                     .status(404)
-                    .body(Map.of("error", "Usuario no encontrado"));
+                    .body(Map.of("Error", "Usuario no encontrado"));
         } else {
             return ResponseEntity.ok(user); // retorna los datos encontrados
         }
     }
 
-
+    //  Metodo para guardar nuevos usuarios
+    @PostMapping("/saveuser")
+    public ResponseEntity<Map<String, String>> saveUser(@RequestBody UsersModel usersModel) throws SQLException {
+        return usersDAO.saveUser(
+            usersModel.getFirst_name(), 
+            usersModel.getLast_name(), 
+            usersModel.getGender(),
+            usersModel.getAddress(), 
+            usersModel.getCity(),
+            usersModel.getPhone()
+        );
+    }
 }
