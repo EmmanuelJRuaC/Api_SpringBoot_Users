@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @RestController
 @RequestMapping("/users")
@@ -46,8 +47,8 @@ public class UsersController {
         }
     }
 
-    // Metodo para guardar nuevos usuarios
-    @PostMapping("/saveuser")
+    // Metodo para guardar nuevos usuarios (Formato JSON)
+    @PostMapping("/saveuserjson")
     public ResponseEntity<Map<String, Object>> saveUser(@RequestBody UsersModel usersModel) throws SQLException {
         int row = usersDAO.saveUser(
                 usersModel.getFirst_name(),
@@ -63,7 +64,29 @@ public class UsersController {
             body(Map.of("Mensaje:", "¡Usuario creado con exito!"));
         } else {
             return ResponseEntity.
-            status(404).
+            status(400).
+            body(Map.of("Error:", "¡Usuario no creado!"));
+        }
+    }
+
+    // Metodo para guardar nuevos usuarios (Formato URL)
+    @PostMapping("/saveuserurl")
+    public ResponseEntity<Map<String, Object>> saveUser(
+        @RequestParam String first_name,
+        @RequestParam String last_name,
+        @RequestParam String gender,
+        @RequestParam String address,
+        @RequestParam String city,
+        @RequestParam long phone) throws SQLException {
+
+        int row = usersDAO.saveUser(first_name, last_name, gender, address, city, phone);
+        if (row > 0) {
+            return ResponseEntity.
+            status(200).
+            body(Map.of("Mensaje:", "¡Usuario creado con exito!"));
+        } else {
+            return ResponseEntity.
+            status(400).
             body(Map.of("Error:", "¡Usuario no creado!"));
         }
     }
