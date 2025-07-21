@@ -23,7 +23,7 @@ public class UsersModel {
     private String address;
     private String city;
     @NotBlank
-    private long phone;
+    private Long phone;
 
     public UsersModel() {}
 
