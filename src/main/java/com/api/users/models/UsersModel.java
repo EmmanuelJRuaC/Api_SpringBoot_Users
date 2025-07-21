@@ -6,6 +6,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 @Entity
@@ -22,7 +23,7 @@ public class UsersModel {
     private String gender;
     private String address;
     private String city;
-    @NotBlank(message = "El campo es obligatorio")
+    @NotNull(message = "El campo es obligatorio")
     private Long phone;
 
     public UsersModel() {}
