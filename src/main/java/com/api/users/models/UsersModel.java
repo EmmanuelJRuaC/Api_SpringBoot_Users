@@ -22,7 +22,7 @@ public class UsersModel {
     private String gender;
     private String address;
     private String city;
-    @NotBlank
+    @NotBlank(message = "El campo es obligatorio")
     private Long phone;
 
     public UsersModel() {}
