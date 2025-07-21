@@ -5,6 +5,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.api.users.dao.UsersDAO;
 import com.api.users.models.UsersModel;
 
+import jakarta.validation.Valid;
+
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Map;
@@ -49,7 +51,7 @@ public class UsersController {
 
     // Metodo para guardar nuevos usuarios (Formato JSON)
     @PostMapping("/saveuserjson")
-    public ResponseEntity<Map<String, Object>> saveUser(@RequestBody UsersModel usersModel) throws SQLException {
+    public ResponseEntity<?> saveUser(@Valid @RequestBody UsersModel usersModel) throws SQLException {
         int row = usersDAO.saveUser(
                 usersModel.getFirst_name(),
                 usersModel.getLast_name(),
@@ -60,11 +62,12 @@ public class UsersController {
             );
         if (row > 0) {
             return ResponseEntity.
-            status(200).
+            ok().
             body(Map.of("Mensaje:", "¡Usuario creado con exito!"));
         } else {
+           
             return ResponseEntity.
-            status(400).
+            badRequest().
             body(Map.of("Error:", "¡Usuario no creado!"));
         }
     }
@@ -77,16 +80,16 @@ public class UsersController {
         @RequestParam String gender,
         @RequestParam String address,
         @RequestParam String city,
-        @RequestParam long phone) throws SQLException {
+        @Valid @RequestParam long phone) throws SQLException {
 
         int row = usersDAO.saveUser(first_name, last_name, gender, address, city, phone);
         if (row > 0) {
             return ResponseEntity.
-            status(200).
+            ok().
             body(Map.of("Mensaje:", "¡Usuario creado con exito!"));
         } else {
             return ResponseEntity.
-            status(400).
+            badRequest().
             body(Map.of("Error:", "¡Usuario no creado!"));
         }
     }
