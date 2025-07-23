@@ -13,10 +13,10 @@ public class GlobalExceptionHandler {
 
     //Bad Request
     @ExceptionHandler(HttpMessageNotReadableException.class)
-    public ResponseEntity<Map<String, String>> handleInvalidJson(String msg) {
+    public ResponseEntity<Map<String, String>> badUser() {
         return ResponseEntity
             .status(HttpStatus.BAD_REQUEST)
-            .body(Map.of("Error", msg));
+            .body(Map.of("Error", "¡Usuario no creado!"));
     }
 }
 
