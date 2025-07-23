@@ -86,11 +86,7 @@ public class UsersDAO {
                 statement.setString(4, address);
                 statement.setString(5, city);
                 statement.setLong(6, phone);
-                if (phone != null) {
-                    statement.setLong(6, phone);
-                } else {
-                    statement.setNull(6, java.sql.Types.BIGINT);
-                }
+                statement.setLong(6, phone);
                 int row = statement.executeUpdate();
                 
                 return row;
