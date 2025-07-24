@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -97,6 +98,35 @@ public class UsersController {
             ok().
             body(Map.of("Mensaje:", "¡Usuario creado con exito!"));
         }
+        return null;
+    }
+
+    @PutMapping("/updateuser/{id}")
+    public ResponseEntity<Map<String, String>> updateUser(
+        @PathVariable Long id, @RequestBody UsersModel usersModel) throws SQLException {
+        
+        if (usersModel.getPhone() == null) {
+            return ResponseEntity.
+            badRequest().
+            body(Map.of("Error:", "El campo phone es obligatorio"));    
+        }
+        
+        int row = usersDAO.updateUser(
+                id,
+                usersModel.getFirst_name(),
+                usersModel.getLast_name(),
+                usersModel.getGender(),
+                usersModel.getAddress(),
+                usersModel.getCity(),
+                usersModel.getPhone()
+            );
+
+        if (row > 0) {
+            return ResponseEntity.
+            ok().
+            body(Map.of("Mensaje:", "¡Usuario actualizado con exito!"));
+        }
+
         return null;
     }
 }
