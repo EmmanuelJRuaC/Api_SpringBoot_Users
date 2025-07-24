@@ -75,7 +75,9 @@ public class UsersDAO {
     }
 
     @Transactional
-    public int saveUser(String first_name, String last_name, String gender, String address, String city, Long phone) throws SQLException {
+    public int saveUser(
+        String first_name, String last_name, String gender, String address, String city, Long phone)
+            throws SQLException {
         try (Connection connection = new ConnectionFactory().getConnection()) {
             final String QUERY = "INSERT INTO users (first_name, last_name, gender, address, city, phone) VALUES (?, ?, ?, ?, ?, ?)";
             PreparedStatement statement = connection.prepareStatement(QUERY);
@@ -86,9 +88,32 @@ public class UsersDAO {
                 statement.setString(4, address);
                 statement.setString(5, city);
                 statement.setLong(6, phone);
-                statement.setLong(6, phone);
                 int row = statement.executeUpdate();
-                
+
+                return row;
+            }
+        }
+    }
+
+    @Transactional
+    public int updateUser(
+        Long id, String first_name, String last_name, String gender, String address, String city, Long phone) 
+        throws SQLException {
+        try (Connection connection = new ConnectionFactory().getConnection()) {
+            final String QUERY = "UPDATE users SET first_name = ?, last_name = ?, gender = ?, address = ?, city = ?, phone = ? WHERE id = ?";
+
+            PreparedStatement statement = connection.prepareStatement(QUERY);
+            try (statement) {
+                statement.setString(1, first_name);
+                statement.setString(2, last_name);
+                statement.setString(3, gender);
+                statement.setString(4, address);
+                statement.setString(5, city);
+                statement.setLong(6, phone);
+                statement.setLong(7, id);
+
+                int row = statement.executeUpdate();
+
                 return row;
             }
         }
