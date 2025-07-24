@@ -2,10 +2,9 @@ package com.api.users.controllers;
 
 import org.springframework.web.bind.annotation.RestController;
 
+import com.api.users.GlobalExceptionHandler;
 import com.api.users.dao.UsersDAO;
 import com.api.users.models.UsersModel;
-
-import jakarta.validation.Valid;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -42,7 +41,7 @@ public class UsersController {
         if (user.isEmpty()) {
             // Retornar un JSON con un mensaje personalizado
             return ResponseEntity
-                    .status(404)
+                    .badRequest()
                     .body(Map.of("Error", "Usuario no encontrado"));
         } else {
             return ResponseEntity.ok(user); // retorna los datos encontrados
@@ -51,7 +50,13 @@ public class UsersController {
 
     // Metodo para guardar nuevos usuarios (Formato JSON)
     @PostMapping("/saveuserjson")
-    public ResponseEntity<?> saveUser(@Valid @RequestBody UsersModel usersModel) throws SQLException {
+    public ResponseEntity<Map<String, String>> saveUser(@RequestBody UsersModel usersModel) throws SQLException {
+        if (usersModel.getPhone() == null) {
+            return ResponseEntity.
+            badRequest().
+            body(Map.of("Error:", "El campo phone es obligatorio"));    
+        }
+        
         int row = usersDAO.saveUser(
                 usersModel.getFirst_name(),
                 usersModel.getLast_name(),
@@ -60,37 +65,39 @@ public class UsersController {
                 usersModel.getCity(),
                 usersModel.getPhone()
             );
+
         if (row > 0) {
             return ResponseEntity.
             ok().
             body(Map.of("Mensaje:", "¡Usuario creado con exito!"));
-        } else {
-           
-            return ResponseEntity.
-            badRequest().
-            body(Map.of("Error:", "¡Usuario no creado!"));
         }
+
+        return new GlobalExceptionHandler().badUser();
     }
 
     // Metodo para guardar nuevos usuarios (Formato URL)
     @PostMapping("/saveuserurl")
-    public ResponseEntity<Map<String, Object>> saveUser(
+    public ResponseEntity<Map<String, String>> saveUser(
         @RequestParam String first_name,
         @RequestParam String last_name,
         @RequestParam String gender,
         @RequestParam String address,
         @RequestParam String city,
-        @Valid @RequestParam long phone) throws SQLException {
+        @RequestParam(required = false) Long phone) throws SQLException {
+
+        if (phone == null) {
+            return ResponseEntity.
+            badRequest().
+            body(Map.of("Error:", "El campo phone es obligatorio"));    
+        }
 
         int row = usersDAO.saveUser(first_name, last_name, gender, address, city, phone);
+
         if (row > 0) {
             return ResponseEntity.
             ok().
             body(Map.of("Mensaje:", "¡Usuario creado con exito!"));
-        } else {
-            return ResponseEntity.
-            badRequest().
-            body(Map.of("Error:", "¡Usuario no creado!"));
         }
+        return null;
     }
 }
