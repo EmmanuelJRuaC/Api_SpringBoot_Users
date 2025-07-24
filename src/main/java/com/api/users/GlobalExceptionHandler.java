@@ -11,12 +11,11 @@ import java.util.Map;
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
-    //Bad Request
+    // Bad Request
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public ResponseEntity<Map<String, String>> badUser() {
         return ResponseEntity
-            .status(HttpStatus.BAD_REQUEST)
-            .body(Map.of("Error", "¡Usuario no creado!"));
+                .status(HttpStatus.BAD_REQUEST)
+                .body(Map.of("Error", "¡Usuario no creado!"));
     }
 }
-
