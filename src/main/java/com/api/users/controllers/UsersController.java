@@ -2,7 +2,6 @@ package com.api.users.controllers;
 
 import org.springframework.web.bind.annotation.RestController;
 
-import com.api.users.GlobalExceptionHandler;
 import com.api.users.dao.UsersDAO;
 import com.api.users.models.UsersModel;
 
@@ -72,7 +71,7 @@ public class UsersController {
             body(Map.of("Mensaje:", "¡Usuario creado con exito!"));
         }
 
-        return new GlobalExceptionHandler().badUser();
+        return null;
     }
 
     // Metodo para guardar nuevos usuarios (Formato URL)
