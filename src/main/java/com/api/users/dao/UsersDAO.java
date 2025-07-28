@@ -118,4 +118,20 @@ public class UsersDAO {
             }
         }
     }
+
+    @Transactional
+    public int deleteUser(Long id) throws SQLException {
+        try (Connection connection = new ConnectionFactory().getConnection()) {
+            final String QUERY = "DELETE FROM users WHERE id = ?";
+
+            PreparedStatement statement = connection.prepareStatement(QUERY);
+            try (statement) {
+                statement.setLong(1, id);
+
+                int row = statement.executeUpdate();
+
+                return row;
+            }
+        }
+    }
 }
