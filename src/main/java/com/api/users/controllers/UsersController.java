@@ -10,6 +10,8 @@ import java.util.ArrayList;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -144,7 +146,7 @@ public class UsersController {
         }
 
         return ResponseEntity.
-            ok().
+            status(HttpStatus.NOT_FOUND).
             body(Map.of("Error:", "¡Usuario no encontrado!"));
     }
 }
