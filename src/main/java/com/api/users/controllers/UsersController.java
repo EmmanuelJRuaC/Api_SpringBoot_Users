@@ -11,6 +11,7 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -101,6 +102,7 @@ public class UsersController {
         return null;
     }
 
+    // Metodo para actualizar nuevos usuarios (Formato JSON)
     @PutMapping("/updateuser/{id}")
     public ResponseEntity<Map<String, String>> updateUser(
         @PathVariable Long id, @RequestBody UsersModel usersModel) throws SQLException {
@@ -128,5 +130,21 @@ public class UsersController {
         }
 
         return null;
+    }
+
+    // Metodo para eliminar usuario
+    @DeleteMapping("/deleteuser/{id}")
+    public ResponseEntity<Map<String, String>> deleteUser(@PathVariable Long id) throws SQLException {
+        int row = usersDAO.deleteUser(id);
+
+        if (row > 0) {
+            return ResponseEntity.
+            ok().
+            body(Map.of("Mensaje:", "¡Usuario eliminado con exito!"));
+        }
+
+        return ResponseEntity.
+            ok().
+            body(Map.of("Error:", "¡Usuario no encontrado!"));
     }
 }
