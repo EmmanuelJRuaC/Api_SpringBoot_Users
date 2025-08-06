@@ -30,12 +30,20 @@ public class UsersController {
 
     // Metodo para obtener toda la lista de usuarios
     @GetMapping("/getusers")
-    public ArrayList<UsersModel> getUsers() throws SQLException {
-        return usersDAO.getUsers();
+    public ResponseEntity<?> getUsers() throws SQLException {
+        ArrayList<UsersModel> users = usersDAO.getUsers();
+
+        if (users.isEmpty()) {
+        return ResponseEntity.
+            status(HttpStatus.NOT_FOUND).
+            body(Map.of("Mensaje", "No se encontraron usuarios"));
+        }
+
+        return ResponseEntity.ok(users);
     }
 
     // Metodo busqueda de usuario por ID
-    @GetMapping("/getuser/{id}")
+    @GetMapping("/getuserbyid/{id}")
     public ResponseEntity<?> getUserById(@PathVariable long id) throws SQLException {
         ArrayList<UsersModel> user = new ArrayList<>();
         user.addAll(usersDAO.getUserById(id));
@@ -133,10 +141,10 @@ public class UsersController {
         return null;
     }
 
-    // Metodo para eliminar usuario
-    @DeleteMapping("/deleteuser/{id}")
-    public ResponseEntity<Map<String, String>> deleteUser(@PathVariable Long id) throws SQLException {
-        int row = usersDAO.deleteUser(id);
+    // Metodo para eliminar usuario por id
+    @DeleteMapping("/deleteuserbyid/{id}")
+    public ResponseEntity<Map<String, String>> deleteUserById(@PathVariable Long id) throws SQLException {
+        int row = usersDAO.deleteUserById(id);
 
         if (row > 0) {
             return ResponseEntity.
@@ -148,4 +156,18 @@ public class UsersController {
             status(HttpStatus.NOT_FOUND).
             body(Map.of("Error:", "¡Usuario no encontrado!"));
     }
+    
+    @GetMapping("/getusersbyname/{name}")
+    public ResponseEntity<?> getUsers(@PathVariable String name) throws SQLException {
+        ArrayList<UsersModel> users = usersDAO.getUsersByName(name);
+
+        if (users.isEmpty()) {
+        return ResponseEntity.
+            status(HttpStatus.NOT_FOUND).
+            body(Map.of("Mensaje", "No se encontraron usuarios"));
+        }
+
+        return ResponseEntity.ok(users);
+    }
+
 }
