@@ -15,6 +15,7 @@ import com.api.users.models.UsersModel;
 @Service
 public class UsersDAO {
 
+    // Retorna todo los usuarios
     @Transactional(readOnly = true)
     public ArrayList<UsersModel> getUsers() throws SQLException {
         ArrayList<UsersModel> users = new ArrayList<>();
@@ -44,6 +45,7 @@ public class UsersDAO {
         }
     }
 
+    // Retorna usuario por el id
     @Transactional(readOnly = true)
     public ArrayList<UsersModel> getUserById(long id) throws SQLException {
         ArrayList<UsersModel> users = new ArrayList<>();
@@ -74,6 +76,7 @@ public class UsersDAO {
         }
     }
 
+    // Guardar un nuevo usuario
     @Transactional
     public int saveUser(
         String first_name, String last_name, String gender, String address, String city, Long phone)
@@ -95,6 +98,7 @@ public class UsersDAO {
         }
     }
 
+    // Actualiza los datos del usuario
     @Transactional
     public int updateUser(
         Long id, String first_name, String last_name, String gender, String address, String city, Long phone) 
@@ -119,8 +123,9 @@ public class UsersDAO {
         }
     }
 
+    // Elimina un usuario por id
     @Transactional
-    public int deleteUser(Long id) throws SQLException {
+    public int deleteUserById(Long id) throws SQLException {
         try (Connection connection = new ConnectionFactory().getConnection()) {
             final String QUERY = "DELETE FROM users WHERE id = ?";
 
@@ -132,6 +137,37 @@ public class UsersDAO {
 
                 return row;
             }
+        }
+    }
+
+    // Retorna los usuarios por coincidencia del nombre
+    @Transactional(readOnly = true)
+    public ArrayList<UsersModel> getUsersByName(String name) throws SQLException {
+        ArrayList<UsersModel> users = new ArrayList<>();
+        try (Connection connection = new ConnectionFactory().getConnection()) {
+            final String QUERY = "SELECT * FROM users WHERE first_name LIKE ?";
+            PreparedStatement statement = connection.prepareStatement(QUERY);
+            statement.setString(1, "%" + name + "%");
+            try (statement) {
+                statement.executeQuery();
+                final ResultSet resultSet = statement.getResultSet();
+                try (resultSet) {
+                    while (resultSet.next()) {
+                        UsersModel user = new UsersModel();
+
+                        user.setId(resultSet.getLong("id"));
+                        user.setFirst_name(resultSet.getString("first_name"));
+                        user.setLast_name(resultSet.getString("last_name"));
+                        user.setGender(resultSet.getString("gender"));
+                        user.setAddress(resultSet.getString("address"));
+                        user.setCity(resultSet.getString("city"));
+                        user.setPhone(resultSet.getLong("phone"));
+
+                        users.add(user);
+                    }
+                }
+            }
+            return users;
         }
     }
 }
