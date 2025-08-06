@@ -5,11 +5,15 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "users")
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class UsersModel {
     
     @Id
@@ -22,15 +26,4 @@ public class UsersModel {
     private String address;
     private String city;
     private Long phone;
-
-    public UsersModel() {}
-
-    public UsersModel(String first_name, String last_name, String gender, String address, String city, long phone) {
-        this.first_name = first_name;
-        this.last_name = last_name;
-        this.gender = gender;
-        this.address = address;
-        this.city = city;
-        this.phone = phone;
-    } 
 }
